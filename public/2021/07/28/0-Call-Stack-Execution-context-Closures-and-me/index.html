@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Scene set-upImagine. No. IMAGINE It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="#0 - Execution Context, Hoisting and me">
+<meta property="og:url" content="http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/index.html">
+<meta property="og:site_name" content="Code Cry Repeat">
+<meta property="og:description" content="Scene set-upImagine. No. IMAGINE It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a we">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-28T12:40:35.000Z">
+<meta property="article:modified_time" content="2021-07-28T14:19:22.088Z">
+<meta property="article:author" content="Sergii Kirianov">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>#0 - Execution Context, Hoisting and me</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px1 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About me</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post " href="/2021/07/27/Start-of-series-33-JavaScript-concepts-and-me/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&text=#0 - Execution Context, Hoisting and me"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&is_video=false&description=#0 - Execution Context, Hoisting and me"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#0 - Execution Context, Hoisting and me&body=Check out this article: http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&name=#0 - Execution Context, Hoisting and me&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&t=#0 - Execution Context, Hoisting and me"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene-set-up"><span class="toc-number">1.</span> <span class="toc-text">Scene set-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-JavaScript-engine-works-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">How JavaScript engine works - Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        #0 - Execution Context, Hoisting and me
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Sergii Kirianov</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-07-28T12:40:35.000Z" itemprop="datePublished">2021-07-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/javascript/" rel="tag">javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Scene-set-up"><a href="#Scene-set-up" class="headerlink" title="Scene set-up"></a>Scene set-up</h2><p>Imagine. No. <strong>IMAGINE</strong></p>
+<p>It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a weird name “JavaScript Engine”. You thought - <em>Why not?</em> and now you are here. </p>
+<p>Enter the hall. Get a drink at the bar. You hear a ring, the play is about to start. Once you found your seat, the lights slowly dimmed and stong highlight pointed towards the scene. Announcer slowly centered himself in place and welcomed you all on a journey to JavaScript engine.</p>
+<h2 id="How-JavaScript-engine-works-Execution-Context"><a href="#How-JavaScript-engine-works-Execution-Context" class="headerlink" title="How JavaScript engine works - Execution Context"></a>How JavaScript engine works - Execution Context</h2><p>Just like you are reading a play, that’s how JavaScript engine “reads” your code. Top to bottom. Line by line.<br>When you read a play, all the characters, actions, interactions and comments are stored in your head, from where you understand what is happening. Now this is actually Execution Context.</p>
+<p><strong>IMAGINE</strong></p>
+<p>Now, you are on the other side of the scene. You are the director of the play. A well known and popular director and your plays are always as per the book. You are very pedantic, you know. No one can say, that book was better ;)</p>
+<p>You have a scenario in front of you. Like in any play, first you have the list of the characters. Then their interactions. And then comments and environment descriptions somewhere in between. This, you are setting up the world of the play, where everything is stored and where every character lives. That is the plot. </p>
+<p>Same, the JavaScript engine, when parsing your code, creates a Global Execution Context. The Global Execution Context is split in two phases: <strong>Creation</strong> and <strong>Execution</strong>. </p>
+<p>During the <strong>Creation</strong> stage, you as a director will create a world, you will create characters and write down how they will interact. The JavaScript engine will do the same. It will create a <em>“world”</em> - <strong>window</strong> object and reference to it <strong>this</strong> variable, then it will create <em>“characters”</em> - allocate a memory for variables and set them as ‘undefined’, and then it will store their <em>“interaction”</em> - placing function declarations entirely in the memory. </p>
+<p>When everything is set-up, to perform a play you actually need actors. So, now you are entering the <strong>Execution</strong> stage. You are looking for actors and then tell them how to play, and what to play. And again, JavaScript engine doing exactly the same. During <strong>Execution</strong> stage, it will assign <em>“actors to the characters”</em> - assign values to the variables, then it will make them <em>“play their role”</em> - invoke the functions.</p>
+<p>So, to make it clear, at Global Execution Context at Creation Phase - JavaScript first creates a world the code will run in with <strong>this</strong> refered to it, creates a memory for values and keeps them ‘undefined’ and stores functions into memory. Then, during Execution Phase - JavaScript assigns values to variables and execute the functions. If you ever struggle with ‘hoisting’, that’s basically it. You just nailed it. </p>
+<p><strong>Hoisting</strong> is just the name. Your code is only read by JavaScript engine from top to bottom. But, because it was initially assigned a value of ‘undefined’, the later declared variables, will be still ‘undefined’ when you try to access them. You can’t just interact with the actor, who is not even in a play, right?</p>
+<p>Wait, but I said, that first it creates a Global Execution Context. Is there anything else? Well, yes. There is a Function Execution Context.<br>See, once you understand the idea of Global Execution Context, the Function one is simple. It’s like a play in a play. You know, like Inception.</p>
+<p>Only, when Function Execution Context goes through a <strong>Creation</strong> phase, it actually does not care about a global variable, what it actually cares about are arguments.</p>
+<p>So in case of a Function Execution Context - JavaScript first creates a local world of arguments with <strong>this</strong> refered to them, being provided from the global world, then it creates a memory for local variables and sets them ‘undefined’ and then stores inner functions to the memory. And things go on and on, as deep as you nest functions within functions.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Hope this abstraction actually clarified things for you. In a matter of simplifying information, I have split the topic in few separate posts. If you feel that this concept is clear for you, please proceed to next one <a href="">#0.1 - Call Stack, Closures and me</a>.<br>The whole idea of this blog is to make you imagine the processes, so please read and then close your eyes and let you imagination do the rest for you.</p>
+<p>Please, feel free to contact me, if something was not clear, or you have sugestions to make. I am open for conversation.</p>
+<p>See you around.</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About me</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene-set-up"><span class="toc-number">1.</span> <span class="toc-text">Scene set-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-JavaScript-engine-works-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">How JavaScript engine works - Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&text=#0 - Execution Context, Hoisting and me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&is_video=false&description=#0 - Execution Context, Hoisting and me"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#0 - Execution Context, Hoisting and me&body=Check out this article: http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&title=#0 - Execution Context, Hoisting and me"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&name=#0 - Execution Context, Hoisting and me&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/&t=#0 - Execution Context, Hoisting and me"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Sergii Kirianov
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About me</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
+
+
+    <!-- jquery -->
+ 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+
+
+
+<!-- clipboard -->
+
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'cactus-1';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
