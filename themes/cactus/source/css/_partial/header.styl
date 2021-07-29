@@ -86,17 +86,23 @@ if $logo-grayout
   .py4 
     padding-top: 1rem
 
+  #header #logo
+    margin-right: 10px
+
   #header #title
     display: table
-    margin-right: 5rem
+    margin-right: 3rem
     min-height: $logo-height
     h1
       margin-top: 1rem
+      font-size: 1.2rem
       display: block
 
   #header #nav
     ul
       display: flex
+      a
+        margin-right: 0
       a:hover
         background: none
       a:active
@@ -114,7 +120,7 @@ if $logo-grayout
       li.icon
         position: absolute
         top: 1.8rem
-        right: 0.2rem
+        right: 0.1rem
         display: inline-block
         
       #home

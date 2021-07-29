@@ -4,47 +4,62 @@ date: 2021-07-28 15:40:35
 tags: javascript
 ---
 
-## Scene set-up
+This is the first post of the series "JavaScript and me". JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and aimed to help others, who may struggle to grasp them.
 
-Imagine. No. **IMAGINE**
+Today we will look at the fundamentals of how JavaScript running behind the scenes. Today, we will be JavaScript ourselves.
 
-It's a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You've got a free ticket to a play with rather a weird name "JavaScript Engine". You thought - *Why not?* and now you are here. 
+## Execution Context
 
-Enter the hall. Get a drink at the bar. You hear a ring, the play is about to start. Once you found your seat, the lights slowly dimmed and stong highlight pointed towards the scene. Announcer slowly centered himself in place and welcomed you all on a journey to JavaScript engine.
+What is this? **Execution Context** is the process JavaScript Engine is using to interpret your code. It is simply a splitting of one big and complicated task into small easy steps. Understanding of this topic is *essential* to see the big picture. Other advanced topics will get much clearer once you get it.
 
-## How JavaScript engine works - Execution Context
+## Global Execution Context
 
-Just like you are reading a play, that's how JavaScript engine "reads" your code. Top to bottom. Line by line. 
-When you read a play, all the characters, actions, interactions and comments are stored in your head, from where you understand what is happening. Now this is actually Execution Context.
+JavaScript "reads" your code top to bottom. Line by line, like you read this post. The first thing happnes when you run your ***.js*** file is the creation of Global Execution Context. This process consists of two phases: **Creation** and **Execution**.
 
-**IMAGINE**
+**Creation Phase**
 
-Now, you are on the other side of the scene. You are the director of the play. A well known and popular director and your plays are always as per the book. You are very pedantic, you know. No one can say, that book was better ;)
+***Imagination ON***
+You are the writer. You want to write a new book. What will you do first? Right, create the world. You will *create* a foundation of the story - the world, where your *characters* will exist and live. Like a global object everyone refers to. *this* world.
 
-You have a scenario in front of you. Like in any play, first you have the list of the characters. Then their interactions. And then comments and environment descriptions somewhere in between. This, you are setting up the world of the play, where everything is stored and where every character lives. That is the plot. 
+Once the world is created, you want to add some *characters*, right? Empty world is no fun, you know. Somebody who will *interact* with each other and the world. Let's do it. Let's declare their existance and function. 
 
-Same, the JavaScript engine, when parsing your code, creates a Global Execution Context. The Global Execution Context is split in two phases: **Creation** and **Execution**. 
+A while after, the story is completed. The book has become a new bestseller. Hollywood wants to film it now.
+***Imagination OFF***
 
-During the **Creation** stage, you as a director will create a world, you will create characters and write down how they will interact. The JavaScript engine will do the same. It will create a *"world"* - **window** object and reference to it **this** variable, then it will create *"characters"* - allocate a memory for variables and set them as 'undefined', and then it will store their *"interaction"* - placing function declarations entirely in the memory. 
+When JavaScript Engine parses your code it *creates* a global object `window` and variable `this` which refers to that object. Memory is allocated for variables. Their names stored and assigned a value of 'undefined'. 
 
-When everything is set-up, to perform a play you actually need actors. So, now you are entering the **Execution** stage. You are looking for actors and then tell them how to play, and what to play. And again, JavaScript engine doing exactly the same. During **Execution** stage, it will assign *"actors to the characters"* - assign values to the variables, then it will make them *"play their role"* - invoke the functions.
+> JavaScript running in the browser will create `window` object and running in Nodejs will create `global` object.
 
-So, to make it clear, at Global Execution Context at Creation Phase - JavaScript first creates a world the code will run in with **this** refered to it, creates a memory for values and keeps them 'undefined' and stores functions into memory. Then, during Execution Phase - JavaScript assigns values to variables and execute the functions. If you ever struggle with 'hoisting', that's basically it. You just nailed it. 
+**Execution Phase**
 
-**Hoisting** is just the name. Your code is only read by JavaScript engine from top to bottom. But, because it was initially assigned a value of 'undefined', the later declared variables, will be still 'undefined' when you try to access them. You can't just interact with the actor, who is not even in a play, right?
+***Imagination ON***
+Now, you are a famous Holywood Director, you've got the script for that new book everyone is talking about and big bosses wants it to be filmed. The world has been created for you already, it just needs to be brought to life. You have noticed, that script is not written very well and sometimes new characters appear in the middle of the chapter. But you are a visioner, you are well known for following the scripts like a machine, no one can say that book was better.
 
-Wait, but I said, that first it creates a Global Execution Context. Is there anything else? Well, yes. There is a Function Execution Context.
-See, once you understand the idea of Global Execution Context, the Function one is simple. It's like a play in a play. You know, like Inception.
+You start hiring actors and *assigning* them to the characters. Then. Camera! Motor! Action! You are filming them acting, *functioning*. 
 
-Only, when Function Execution Context goes through a **Creation** phase, it actually does not care about a global variable, what it actually cares about are arguments.
+And that's it. Movie is ready. Oscar is your, no doubt.
+***Imagination OFF***
 
-So in case of a Function Execution Context - JavaScript first creates a local world of arguments with **this** refered to them, being provided from the global world, then it creates a memory for local variables and sets them 'undefined' and then stores inner functions to the memory. And things go on and on, as deep as you nest functions within functions.
+At the Execution Phase the JavaScript Engine is assigning the values to the variables stored in memory and invoking the functions.
+
+**Creation and Execution Phase**
+
+The Execution Phase starts when Creation Phase is over. If you look closely, you will spot that because all the variables have been stored with value of 'undefined' during Creation Phase, you can actually call them before they were assigned a value. This leads us to the next concept - Hoisting.
+
+## Function Execution Context
+
+Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another `window` object, as it can be created only once, but instead it creates an `arguments` object. This "arguments" object is local and accessible only within the context of that function.
+
+## Hoisting
+
+During the Execution Phase variables declared with `var` will be accessible, even before values were assigned to them, because they already store 'undefined' and it will not cause a Reference error. Variables declared with `let` and `const` will be only initialized during Execution Phase and values assigned at that moment, hence trying to access this variables before will lead to Refence error. 
+
+On the other hand, Functions have been fully stored in memory during Creation Phase, which allows us to invoke them even before they have been initialized at the Execution Phase. 
+
+Ability to invoke functions before initializing is called **Hoisting**. 
 
 ## Summary
 
-Hope this abstraction actually clarified things for you. In a matter of simplifying information, I have split the topic in few separate posts. If you feel that this concept is clear for you, please proceed to next one [#0.1 - Call Stack, Closures and me]().
-The whole idea of this blog is to make you imagine the processes, so please read and then close your eyes and let you imagination do the rest for you.
+I Hope this was helpfull and maybe made things clear. This is very fundamental topic, which I recently was not aware of and most of beginner guides are missing this. Even while I was writing draft of this post, I have realised how recursion works better. Please feel free to contact me if you find something wrong or if there anything you would like to add. 
 
-Please, feel free to contact me, if something was not clear, or you have sugestions to make. I am open for conversation.
-
-See you around.
+See you around!

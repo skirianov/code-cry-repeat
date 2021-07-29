@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="Scene set-upImagine. No. IMAGINE It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a we">
+    <meta name="description" content="This is the first post of the series “JavaScript and me”. JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and ai">
 <meta property="og:type" content="article">
 <meta property="og:title" content="#0 - Execution Context, Hoisting and me">
 <meta property="og:url" content="http://skirianov.com/2021/07/28/0-Call-Stack-Execution-context-Closures-and-me/index.html">
 <meta property="og:site_name" content="Code Cry Repeat">
-<meta property="og:description" content="Scene set-upImagine. No. IMAGINE It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a we">
+<meta property="og:description" content="This is the first post of the series “JavaScript and me”. JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and ai">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-07-28T12:40:35.000Z">
-<meta property="article:modified_time" content="2021-07-28T14:19:22.088Z">
+<meta property="article:modified_time" content="2021-07-29T23:23:49.369Z">
 <meta property="article:author" content="Sergii Kirianov">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
@@ -74,8 +74,6 @@
       <ul>
         
         
-        <li><a class="icon" aria-label="Next post " href="/2021/07/27/Start-of-series-33-JavaScript-concepts-and-me/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
         <li><a class="icon" aria-label="Back to top " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="Share post " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
       </ul>
@@ -102,7 +100,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene-set-up"><span class="toc-number">1.</span> <span class="toc-text">Scene set-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-JavaScript-engine-works-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">How JavaScript engine works - Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Execution-Context"><span class="toc-number">1.</span> <span class="toc-text">Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Global-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">Global Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Execution-Context"><span class="toc-number">3.</span> <span class="toc-text">Function Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hoisting"><span class="toc-number">4.</span> <span class="toc-text">Hoisting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">5.</span> <span class="toc-text">Summary</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -146,24 +144,31 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="Scene-set-up"><a href="#Scene-set-up" class="headerlink" title="Scene set-up"></a>Scene set-up</h2><p>Imagine. No. <strong>IMAGINE</strong></p>
-<p>It’s a pleasant evening, just after dawn. You, wearing fancy cloths, standing in front of the best theatre in town. You’ve got a free ticket to a play with rather a weird name “JavaScript Engine”. You thought - <em>Why not?</em> and now you are here. </p>
-<p>Enter the hall. Get a drink at the bar. You hear a ring, the play is about to start. Once you found your seat, the lights slowly dimmed and stong highlight pointed towards the scene. Announcer slowly centered himself in place and welcomed you all on a journey to JavaScript engine.</p>
-<h2 id="How-JavaScript-engine-works-Execution-Context"><a href="#How-JavaScript-engine-works-Execution-Context" class="headerlink" title="How JavaScript engine works - Execution Context"></a>How JavaScript engine works - Execution Context</h2><p>Just like you are reading a play, that’s how JavaScript engine “reads” your code. Top to bottom. Line by line.<br>When you read a play, all the characters, actions, interactions and comments are stored in your head, from where you understand what is happening. Now this is actually Execution Context.</p>
-<p><strong>IMAGINE</strong></p>
-<p>Now, you are on the other side of the scene. You are the director of the play. A well known and popular director and your plays are always as per the book. You are very pedantic, you know. No one can say, that book was better ;)</p>
-<p>You have a scenario in front of you. Like in any play, first you have the list of the characters. Then their interactions. And then comments and environment descriptions somewhere in between. This, you are setting up the world of the play, where everything is stored and where every character lives. That is the plot. </p>
-<p>Same, the JavaScript engine, when parsing your code, creates a Global Execution Context. The Global Execution Context is split in two phases: <strong>Creation</strong> and <strong>Execution</strong>. </p>
-<p>During the <strong>Creation</strong> stage, you as a director will create a world, you will create characters and write down how they will interact. The JavaScript engine will do the same. It will create a <em>“world”</em> - <strong>window</strong> object and reference to it <strong>this</strong> variable, then it will create <em>“characters”</em> - allocate a memory for variables and set them as ‘undefined’, and then it will store their <em>“interaction”</em> - placing function declarations entirely in the memory. </p>
-<p>When everything is set-up, to perform a play you actually need actors. So, now you are entering the <strong>Execution</strong> stage. You are looking for actors and then tell them how to play, and what to play. And again, JavaScript engine doing exactly the same. During <strong>Execution</strong> stage, it will assign <em>“actors to the characters”</em> - assign values to the variables, then it will make them <em>“play their role”</em> - invoke the functions.</p>
-<p>So, to make it clear, at Global Execution Context at Creation Phase - JavaScript first creates a world the code will run in with <strong>this</strong> refered to it, creates a memory for values and keeps them ‘undefined’ and stores functions into memory. Then, during Execution Phase - JavaScript assigns values to variables and execute the functions. If you ever struggle with ‘hoisting’, that’s basically it. You just nailed it. </p>
-<p><strong>Hoisting</strong> is just the name. Your code is only read by JavaScript engine from top to bottom. But, because it was initially assigned a value of ‘undefined’, the later declared variables, will be still ‘undefined’ when you try to access them. You can’t just interact with the actor, who is not even in a play, right?</p>
-<p>Wait, but I said, that first it creates a Global Execution Context. Is there anything else? Well, yes. There is a Function Execution Context.<br>See, once you understand the idea of Global Execution Context, the Function one is simple. It’s like a play in a play. You know, like Inception.</p>
-<p>Only, when Function Execution Context goes through a <strong>Creation</strong> phase, it actually does not care about a global variable, what it actually cares about are arguments.</p>
-<p>So in case of a Function Execution Context - JavaScript first creates a local world of arguments with <strong>this</strong> refered to them, being provided from the global world, then it creates a memory for local variables and sets them ‘undefined’ and then stores inner functions to the memory. And things go on and on, as deep as you nest functions within functions.</p>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Hope this abstraction actually clarified things for you. In a matter of simplifying information, I have split the topic in few separate posts. If you feel that this concept is clear for you, please proceed to next one <a href="">#0.1 - Call Stack, Closures and me</a>.<br>The whole idea of this blog is to make you imagine the processes, so please read and then close your eyes and let you imagination do the rest for you.</p>
-<p>Please, feel free to contact me, if something was not clear, or you have sugestions to make. I am open for conversation.</p>
-<p>See you around.</p>
+    <p>This is the first post of the series “JavaScript and me”. JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and aimed to help others, who may struggle to grasp them.</p>
+<p>Today we will look at the fundamentals of how JavaScript running behind the scenes. Today, we will be JavaScript ourselves.</p>
+<h2 id="Execution-Context"><a href="#Execution-Context" class="headerlink" title="Execution Context"></a>Execution Context</h2><p>What is this? <strong>Execution Context</strong> is the process JavaScript Engine is using to interpret your code. It is simply a splitting of one big and complicated task into small easy steps. Understanding of this topic is <em>essential</em> to see the big picture. Other advanced topics will get much clearer once you get it.</p>
+<h2 id="Global-Execution-Context"><a href="#Global-Execution-Context" class="headerlink" title="Global Execution Context"></a>Global Execution Context</h2><p>JavaScript “reads” your code top to bottom. Line by line, like you read this post. The first thing happnes when you run your <em><strong>.js</strong></em> file is the creation of Global Execution Context. This process consists of two phases: <strong>Creation</strong> and <strong>Execution</strong>.</p>
+<p><strong>Creation Phase</strong></p>
+<p><em><strong>Imagination ON</strong></em><br>You are the writer. You want to write a new book. What will you do first? Right, create the world. You will <em>create</em> a foundation of the story - the world, where your <em>characters</em> will exist and live. Like a global object everyone refers to. <em>this</em> world.</p>
+<p>Once the world is created, you want to add some <em>characters</em>, right? Empty world is no fun, you know. Somebody who will <em>interact</em> with each other and the world. Let’s do it. Let’s declare their existance and function. </p>
+<p>A while after, the story is completed. The book has become a new bestseller. Hollywood wants to film it now.<br><em><strong>Imagination OFF</strong></em></p>
+<p>When JavaScript Engine parses your code it <em>creates</em> a global object <code>window</code> and variable <code>this</code> which refers to that object. Memory is allocated for variables. Their names stored and assigned a value of ‘undefined’. </p>
+<blockquote>
+<p>JavaScript running in the browser will create <code>window</code> object and running in Nodejs will create <code>global</code> object.</p>
+</blockquote>
+<p><strong>Execution Phase</strong></p>
+<p><em><strong>Imagination ON</strong></em><br>Now, you are a famous Holywood Director, you’ve got the script for that new book everyone is talking about and big bosses wants it to be filmed. The world has been created for you already, it just needs to be brought to life. You have noticed, that script is not written very well and sometimes new characters appear in the middle of the chapter. But you are a visioner, you are well known for following the scripts like a machine, no one can say that book was better.</p>
+<p>You start hiring actors and <em>assigning</em> them to the characters. Then. Camera! Motor! Action! You are filming them acting, <em>functioning</em>. </p>
+<p>And that’s it. Movie is ready. Oscar is your, no doubt.<br><em><strong>Imagination OFF</strong></em></p>
+<p>At the Execution Phase the JavaScript Engine is assigning the values to the variables stored in memory and invoking the functions.</p>
+<p><strong>Creation and Execution Phase</strong></p>
+<p>The Execution Phase starts when Creation Phase is over. If you look closely, you will spot that because all the variables have been stored with value of ‘undefined’ during Creation Phase, you can actually call them before they were assigned a value. This leads us to the next concept - Hoisting.</p>
+<h2 id="Function-Execution-Context"><a href="#Function-Execution-Context" class="headerlink" title="Function Execution Context"></a>Function Execution Context</h2><p>Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another <code>window</code> object, as it can be created only once, but instead it creates an <code>arguments</code> object. This “arguments” object is local and accessible only within the context of that function.</p>
+<h2 id="Hoisting"><a href="#Hoisting" class="headerlink" title="Hoisting"></a>Hoisting</h2><p>During the Execution Phase variables declared with <code>var</code> will be accessible, even before values were assigned to them, because they already store ‘undefined’ and it will not cause a Reference error. Variables declared with <code>let</code> and <code>const</code> will be only initialized during Execution Phase and values assigned at that moment, hence trying to access this variables before will lead to Refence error. </p>
+<p>On the other hand, Functions have been fully stored in memory during Creation Phase, which allows us to invoke them even before they have been initialized at the Execution Phase. </p>
+<p>Ability to invoke functions before initializing is called <strong>Hoisting</strong>. </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I Hope this was helpfull and maybe made things clear. This is very fundamental topic, which I recently was not aware of and most of beginner guides are missing this. Even while I was writing draft of this post, I have realised how recursion works better. Please feel free to contact me if you find something wrong or if there anything you would like to add. </p>
+<p>See you around!</p>
 
   </div>
 </article>
@@ -193,7 +198,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scene-set-up"><span class="toc-number">1.</span> <span class="toc-text">Scene set-up</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#How-JavaScript-engine-works-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">How JavaScript engine works - Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Execution-Context"><span class="toc-number">1.</span> <span class="toc-text">Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Global-Execution-Context"><span class="toc-number">2.</span> <span class="toc-text">Global Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Function-Execution-Context"><span class="toc-number">3.</span> <span class="toc-text">Function Execution Context</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hoisting"><span class="toc-number">4.</span> <span class="toc-text">Hoisting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">5.</span> <span class="toc-text">Summary</span></a></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
@@ -317,7 +322,7 @@
 <!-- Disqus Comments -->
 
     <script type="text/javascript">
-        var disqus_shortname = 'cactus-1';
+        var disqus_shortname = 'crycodere';
 
         (function(){
             var dsq = document.createElement('script');

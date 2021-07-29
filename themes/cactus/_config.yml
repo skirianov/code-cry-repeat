@@ -144,7 +144,7 @@ mathjax:
 # Fill in your Disqus Comments Shortname to enable Disqus comments.
 disqus:
   enabled: true
-  shortname: cactus-1
+  shortname: crycodere
 
 # Fill in your Google Analytics tracking ID to enable Google Analytics.
 google_analytics:
