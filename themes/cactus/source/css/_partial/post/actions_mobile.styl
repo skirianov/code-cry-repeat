@@ -3,7 +3,7 @@
   right: 0
   bottom: 0
   left: 0
-  z-index: 5000000
+  z-index: 10
   width: 100%
   border-top: 1px solid $color-border
   background: $color-footer-mobile-1
@@ -16,6 +16,7 @@
 
   a.icon
     background: none
+    margin-bottom: 10px
 
     &:hover
       color: $color-link
@@ -25,7 +26,7 @@
     padding-left: 1rem
     background: #000
     text-align: center
-
+    
     a
       color: $color-accent-1
       font-size: 1em
@@ -51,19 +52,21 @@
         border-left: 1px solid $color-accent-1
 
   #actions-footer
-    overflow: auto
+    display: flex
+    justify-content: space-between
     margin-top: 1rem
     margin-bottom: 1rem
     padding-right: 1rem
-    padding-left: 1rem
+    padding-left: 0.5rem
     width: 100%
     text-align: center
     white-space: nowrap
 
     a
       display: inline-block
-      padding-left: 1rem
+      padding-left: 0.5rem
       color: #000
+      width: 25%
 
   #share-footer
     padding-right: 1rem
@@ -92,7 +95,7 @@
     text-align: left
 
     ol
-      margin: 0
+      margin-bottom: 0
       padding-left: 20px
       list-style-type: none
 

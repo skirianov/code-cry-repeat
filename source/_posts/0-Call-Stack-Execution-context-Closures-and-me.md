@@ -6,7 +6,7 @@ tags: javascript
 
 This is the first post of the series "JavaScript and me". JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and aimed to help others, who may struggle to grasp them.
 
-Today we will look at the fundamentals of how JavaScript running behind the scenes. Today, we will be JavaScript ourselves.
+Today we will look at the fundamentals of how JavaScript running behind the scenes. Today we will be JavaScript ourselves.
 
 ## Execution Context
 
@@ -14,7 +14,7 @@ What is this? **Execution Context** is the process JavaScript Engine is using to
 
 ## Global Execution Context
 
-JavaScript "reads" your code top to bottom. Line by line, like you read this post. The first thing happnes when you run your ***.js*** file is the creation of Global Execution Context. This process consists of two phases: **Creation** and **Execution**.
+JavaScript "reads" your code from top to bottom. Line by line, like you read this post. The first thing happens when you run your ***.js*** file is the creation of Global Execution Context. This process consists of two phases: **Creation** and **Execution**.
 
 **Creation Phase**
 
@@ -28,6 +28,18 @@ A while after, the story is completed. The book has become a new bestseller. Hol
 
 When JavaScript Engine parses your code it *creates* a global object `window` and variable `this` which refers to that object. Memory is allocated for variables. Their names stored and assigned a value of 'undefined'. 
 
+
+```
+  var foo = 'bar';
+  var person = 'John Doe';
+
+  function sayHi() {
+    console.log('Hello world!')
+  }
+```
+
+![creation-phase-code-snippet](https://blog.skirianov.com/images/creation-phase.png)
+
 > JavaScript running in the browser will create `window` object and running in Nodejs will create `global` object.
 
 **Execution Phase**
@@ -40,7 +52,9 @@ You start hiring actors and *assigning* them to the characters. Then. Camera! Mo
 And that's it. Movie is ready. Oscar is your, no doubt.
 ***Imagination OFF***
 
-At the Execution Phase the JavaScript Engine is assigning the values to the variables stored in memory and invoking the functions.
+At the Execution Phase the JavaScript Engine is assigning values to the variables stored in memory and ininitializing functions.
+
+![execution-phase-code-snippet](https://blog.skirianov.com/images/execution-phase.png)
 
 **Creation and Execution Phase**
 
@@ -49,6 +63,8 @@ The Execution Phase starts when Creation Phase is over. If you look closely, you
 ## Function Execution Context
 
 Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another `window` object, as it can be created only once, but instead it creates an `arguments` object. This "arguments" object is local and accessible only within the context of that function.
+
+It is like the *world* created inside the global *wowld*.
 
 ## Hoisting
 
@@ -60,6 +76,6 @@ Ability to invoke functions before initializing is called **Hoisting**.
 
 ## Summary
 
-I Hope this was helpfull and maybe made things clear. This is very fundamental topic, which I recently was not aware of and most of beginner guides are missing this. Even while I was writing draft of this post, I have realised how recursion works better. Please feel free to contact me if you find something wrong or if there anything you would like to add. 
+I hope this was helpfull and made things clear. This is very fundamental topic, which I recently was not aware of and most of beginner guides are missing this. Even while I was writing draft of this post, I have got better understanding how recursion works. Please feel free to contact me if you find something wrong or if there anything you would like to add. 
 
 See you around!
