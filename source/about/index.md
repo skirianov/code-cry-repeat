@@ -4,14 +4,8 @@ date: 2021-07-27 15:56:08
 ---
 
 ## Welcome 
-
-Hi! My name is Sergii Kirianov and welcome to my personal blog. 
-This is my first ever experience of writing blog posts. 
-
-<img src="../images/me.jpg" width="300px">
-
+<img src="../images/me.jpg" width="300px" alt="me and my doggo sitting in front of desk setup" id="my-image">Hi! My name is Sergii Kirianov and welcome to my personal blog. This is my first ever experience of writing blog posts. 
 I have made it as a track record of my learning path and will be sharing my personal view on the Web Development concepts.
-
 I am a self-taught web-developer with marine background. I have started learning web development about a year ago, but I always had a passion to tech and programming. I am curious and always was wondering how things are working from inside, under the hood. 
 When I was a teen, I played an online MMORPG game called RF Online and once I found that you can actually repaint skins only using photoshop. I made a deal with GM and he was giving me free donate stuff for my job :D 
 
