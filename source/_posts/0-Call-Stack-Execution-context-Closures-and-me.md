@@ -36,9 +36,11 @@ When JavaScript Engine parses your code it *creates* a global object `window` an
   function sayHi() {
     console.log('Hello world!')
   }
+
+  sayHi();
 ```
 
-![creation-phase-code-snippet](https://blog.skirianov.com/images/creation-phase.png)
+<img src="../../../../images/creation-phase.png" width="600px" alt="creation-phase-code-snippet">
 
 > JavaScript running in the browser will create `window` object and running in Nodejs will create `global` object.
 
@@ -54,13 +56,17 @@ And that's it. Movie is ready. Oscar is your, no doubt.
 
 At the Execution Phase the JavaScript Engine is assigning values to the variables stored in memory and ininitializing functions.
 
-![execution-phase-code-snippet](https://blog.skirianov.com/images/execution-phase.png)
+<img src="../../../../images/execution-phase.png" width="600px">
 
 **Creation and Execution Phase**
 
 The Execution Phase starts when Creation Phase is over. If you look closely, you will spot that because all the variables have been stored with value of 'undefined' during Creation Phase, you can actually call them before they were assigned a value. This leads us to the next concept - Hoisting.
 
 ## Function Execution Context
+
+<img src="../../../../images/same-context.jpg" width="400px">
+
+Well, almost.
 
 Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another `window` object, as it can be created only once, but instead it creates an `arguments` object. This "arguments" object is local and accessible only within the context of that function.
 

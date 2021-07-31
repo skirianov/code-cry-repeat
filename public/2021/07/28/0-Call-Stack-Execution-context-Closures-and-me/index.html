@@ -13,14 +13,15 @@
 <meta property="og:site_name" content="Code Cry Repeat">
 <meta property="og:description" content="This is the first post of the series “JavaScript and me”. JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and ai">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://blog.skirianov.com/images/creation-phase.png">
-<meta property="og:image" content="https://blog.skirianov.com/images/execution-phase.png">
+<meta property="og:image" content="http://skirianov.com/images/creation-phase.png">
+<meta property="og:image" content="http://skirianov.com/images/execution-phase.png">
+<meta property="og:image" content="http://skirianov.com/images/same-context.jpg">
 <meta property="article:published_time" content="2021-07-28T12:40:35.000Z">
-<meta property="article:modified_time" content="2021-07-30T23:05:59.717Z">
+<meta property="article:modified_time" content="2021-07-31T11:10:56.709Z">
 <meta property="article:author" content="Sergii Kirianov">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.skirianov.com/images/creation-phase.png">
+<meta name="twitter:image" content="http://skirianov.com/images/creation-phase.png">
     
     
       
@@ -156,9 +157,10 @@
 <p>Once the world is created, you want to add some <em>characters</em>, right? Empty world is no fun, you know. Somebody who will <em>interact</em> with each other and the world. Let’s do it. Let’s declare their existance and function. </p>
 <p>A while after, the story is completed. The book has become a new bestseller. Hollywood wants to film it now.<br><em><strong>Imagination OFF</strong></em></p>
 <p>When JavaScript Engine parses your code it <em>creates</em> a global object <code>window</code> and variable <code>this</code> which refers to that object. Memory is allocated for variables. Their names stored and assigned a value of ‘undefined’. </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var foo = &#x27;bar&#x27;;</span><br><span class="line">var person = &#x27;John Doe&#x27;;</span><br><span class="line"></span><br><span class="line">function sayHi() &#123;</span><br><span class="line">  console.log(&#x27;Hello world!&#x27;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var foo = &#x27;bar&#x27;;</span><br><span class="line">var person = &#x27;John Doe&#x27;;</span><br><span class="line"></span><br><span class="line">function sayHi() &#123;</span><br><span class="line">  console.log(&#x27;Hello world!&#x27;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayHi();</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://blog.skirianov.com/images/creation-phase.png" alt="creation-phase-code-snippet"></p>
+<img src="../../../../images/creation-phase.png" width="600px" alt="creation-phase-code-snippet">
+
 <blockquote>
 <p>JavaScript running in the browser will create <code>window</code> object and running in Nodejs will create <code>global</code> object.</p>
 </blockquote>
@@ -167,10 +169,14 @@
 <p>You start hiring actors and <em>assigning</em> them to the characters. Then. Camera! Motor! Action! You are filming them acting, <em>functioning</em>. </p>
 <p>And that’s it. Movie is ready. Oscar is your, no doubt.<br><em><strong>Imagination OFF</strong></em></p>
 <p>At the Execution Phase the JavaScript Engine is assigning values to the variables stored in memory and ininitializing functions.</p>
-<p><img src="https://blog.skirianov.com/images/execution-phase.png" alt="execution-phase-code-snippet"></p>
+<img src="../../../../images/execution-phase.png" width="600px">
+
 <p><strong>Creation and Execution Phase</strong></p>
 <p>The Execution Phase starts when Creation Phase is over. If you look closely, you will spot that because all the variables have been stored with value of ‘undefined’ during Creation Phase, you can actually call them before they were assigned a value. This leads us to the next concept - Hoisting.</p>
-<h2 id="Function-Execution-Context"><a href="#Function-Execution-Context" class="headerlink" title="Function Execution Context"></a>Function Execution Context</h2><p>Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another <code>window</code> object, as it can be created only once, but instead it creates an <code>arguments</code> object. This “arguments” object is local and accessible only within the context of that function.</p>
+<h2 id="Function-Execution-Context"><a href="#Function-Execution-Context" class="headerlink" title="Function Execution Context"></a>Function Execution Context</h2><img src="../../../../images/same-context.jpg" width="400px">
+
+<p>Well, almost.</p>
+<p>Function Execution Context follows almost identically same principles as Global Execution Context. Only difference is, that Function Execution Context is not creating another <code>window</code> object, as it can be created only once, but instead it creates an <code>arguments</code> object. This “arguments” object is local and accessible only within the context of that function.</p>
 <p>It is like the <em>world</em> created inside the global <em>wowld</em>.</p>
 <h2 id="Hoisting"><a href="#Hoisting" class="headerlink" title="Hoisting"></a>Hoisting</h2><p>During the Execution Phase variables declared with <code>var</code> will be accessible, even before values were assigned to them, because they already store ‘undefined’ and it will not cause a Reference error. Variables declared with <code>let</code> and <code>const</code> will be only initialized during Execution Phase and values assigned at that moment, hence trying to access this variables before will lead to Refence error. </p>
 <p>On the other hand, Functions have been fully stored in memory during Creation Phase, which allows us to invoke them even before they have been initialized at the Execution Phase. </p>
