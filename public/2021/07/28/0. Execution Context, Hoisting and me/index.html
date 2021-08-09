@@ -10,16 +10,21 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="#0 - Execution Context, Hoisting and me">
 <meta property="og:url" content="http://skirianov.com/2021/07/28/0.%20Execution%20Context,%20Hoisting%20and%20me/index.html">
-<meta property="og:site_name" content="Code Cry Repeat">
+<meta property="og:site_name" content="Code Cry Repeat - Sergii Kirianov blog">
 <meta property="og:description" content="This is the first post of the series “JavaScript and me”. JavaScript fundamentals may be overwhelming and difficult to understand. This blog posts are reflection of my understanding of concepts and ai">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://skirianov.com/images/creation-phase.png">
 <meta property="og:image" content="http://skirianov.com/images/execution-phase.png">
 <meta property="og:image" content="http://skirianov.com/images/same-context.jpg">
 <meta property="article:published_time" content="2021-07-28T12:40:35.000Z">
-<meta property="article:modified_time" content="2021-07-31T15:51:25.767Z">
+<meta property="article:modified_time" content="2021-08-09T19:39:18.504Z">
 <meta property="article:author" content="Sergii Kirianov">
 <meta property="article:tag" content="javascript">
+<meta property="article:tag" content="execution context">
+<meta property="article:tag" content="creation phase">
+<meta property="article:tag" content="execution phase">
+<meta property="article:tag" content="hoisting">
+<meta property="article:tag" content="functions">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://skirianov.com/images/creation-phase.png">
     
@@ -67,7 +72,7 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/about/">About me</a></li>
+          <li><a href="/about/">About</a></li>
          
           <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
         
@@ -141,7 +146,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link-link" href="/tags/javascript/" rel="tag">javascript</a>
+        <a class="tag-link-link" href="/tags/creation-phase/" rel="tag">creation phase</a>, <a class="tag-link-link" href="/tags/execution-context/" rel="tag">execution context</a>, <a class="tag-link-link" href="/tags/execution-phase/" rel="tag">execution phase</a>, <a class="tag-link-link" href="/tags/functions/" rel="tag">functions</a>, <a class="tag-link-link" href="/tags/hoisting/" rel="tag">hoisting</a>, <a class="tag-link-link" href="/tags/javascript/" rel="tag">javascript</a>
     </div>
 
 
@@ -206,7 +211,7 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/about/">About me</a></li>
+          <li><a href="/about/">About</a></li>
          
           <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
         
@@ -259,7 +264,7 @@
          
           <li><a href="/">Home</a></li>
          
-          <li><a href="/about/">About me</a></li>
+          <li><a href="/about/">About</a></li>
          
           <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
         
@@ -272,21 +277,35 @@
     <!-- styles -->
 
 
-
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
 
 
     <!-- jquery -->
  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
 
 
 
 
 <!-- clipboard -->
 
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
   
   <script type="text/javascript">
   $(function() {

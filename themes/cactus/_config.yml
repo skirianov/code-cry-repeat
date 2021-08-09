@@ -16,7 +16,7 @@ direction: ltr
 # Navigation
 nav: 
   home: /
-  'About me': /about/
+  about: /about/
   projects: https://github.com/skirianov
 
 
@@ -114,7 +114,7 @@ favicon:
   colorsheme: custom
 
 # Maximal width of the page in rem units.
-page_width: 48
+page_width: 50
 
 
 ##############################################################################
@@ -175,7 +175,7 @@ gravatar:
 
 # loads libraries and styles from CDN instead or relying on local files
 cdn:
-  enable: true
+  enable: false
   jquery: https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
   clipboard: https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js
   font_awesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css

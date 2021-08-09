@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Code Cry Repeat
+title: Code Cry Repeat - Sergii Kirianov blog
 subtitle: 'Sergii Kirianov blog about javascript and my learning path.'
-description: 'Hi! This blog is created to record my learning path of becoming a developer. Sharing what I have learned and how I imagine code works.'
+description: 'Hey! Welcome to my blog where I am trying to explain JavaScript with funny and real-world examples!'
 keywords: Javascript, web developer, bootstrap, html, css, blog, sergii, kirianov, react, vanilla js, js, webdev, full-stack, mongodb, 
 author: Sergii Kirianov
 language: en
