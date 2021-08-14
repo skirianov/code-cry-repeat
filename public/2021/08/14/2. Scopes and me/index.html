@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Step by step we are on the way to undestand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates thorugh the world of script. We were exercising our imagination last t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="#2 - Scopes, Closure and me">
+<meta property="og:url" content="http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/index.html">
+<meta property="og:site_name" content="Code Cry Repeat - Sergii Kirianov blog">
+<meta property="og:description" content="Step by step we are on the way to undestand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates thorugh the world of script. We were exercising our imagination last t">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-14T17:20:48.000Z">
+<meta property="article:modified_time" content="2021-08-14T19:32:49.558Z">
+<meta property="article:author" content="Sergii Kirianov">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="scope">
+<meta property="article:tag" content="closures">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>#2 - Scopes, Closure and me</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px1 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" "Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post " href="/2021/07/31/1.%20Call%20Stack%20and%20me/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top " href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post " href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes, Closure and me"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes, Closure and me"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#2 - Scopes, Closure and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes, Closure and me&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes, Closure and me"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Welcome-to-Function-City"><span class="toc-number">1.</span> <span class="toc-text">Welcome to Function City!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scope"><span class="toc-number">2.</span> <span class="toc-text">Scope</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        #2 - Scopes, Closure and me
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Sergii Kirianov</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-08-14T17:20:48.000Z" itemprop="datePublished">2021-08-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/closures/" rel="tag">closures</a>, <a class="tag-link-link" href="/tags/javascript/" rel="tag">javascript</a>, <a class="tag-link-link" href="/tags/scope/" rel="tag">scope</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Step by step we are on the way to undestand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates thorugh the world of script. We were exercising our imagination last two posts. This time we need to try harder.</p>
+<p>We already know that JavaScript <strong>function</strong> is a world. The tiny world inside big Global world. Today, we are going to create the first city. The “Function City”.</p>
+<h2 id="Welcome-to-Function-City"><a href="#Welcome-to-Function-City" class="headerlink" title="Welcome to Function City!"></a>Welcome to Function City!</h2><p><em><strong>Imagination ON</strong></em><br>Each city need to have <strong>buildings</strong> and <strong>houses</strong> (it’s same thing, aha). Every city has items and goods for citizens too, so that they can <strong>use</strong> it - buy, sell, cook, wear, etc. Building can be goods too, like a private property. Citizens <strong>use</strong> building too.</p>
+<p>City needs a Mayor. And Mayor of Function City is beloved by all! She is a very kind and generous person. City has it’s own assets and goods. These goods are public and free for everyone. Every <strong>house</strong>hold have <em>access</em> to them.</p>
+<p>As in any modern society everyone has their private goods, which citizens keep inside their <strong>houses</strong>. Some, on the other hand, have some priviliges and can change the goods available for citizens.</p>
+<p>Of course, city is not complete without <em>helper</em> <strong>buildings</strong>, so that citizens can interact with them. Restaurants, Cinemas, Shops, etc. All this <strong>buildings</strong> offer you their services and are <strong>function</strong>ing in the city.</p>
+<p>By the way, your sister Julia works in one of those. She works at Translation Services Agency. How this agency works you wonder? So you <em>pass</em> them your documents (goods), they process it and <strong>return</strong> result back to you. Even if agency does not have any customers it still works. There are so many goods in the city which are public and Agency has <em>access</em> to them. The Agency can actually change and process this documents if needed.</p>
+<p>So, look like a nice city right? It is. But a little weird too. Mayor can change the meaning of the goods. What? What does it mean? Let’s say, today you had a car, then Mayor has <em>reassigned</em> another item to your car and poof….now you have a carrot. </p>
+<p>There are set of words, which were given by the creator of this whole world. Those words can’t be changed. No one can <em>reassign</em> them. Also, citizens do have some common sense. When they were building the city, they made a list of <strong>constant</strong> words which cannot be reassigned too. Whole city depends on these words.</p>
+<p><em><strong>Imagination OFF</strong></em></p>
+<p>Phew…this one was a hard abstraction to make up. I’ve tried to make it simple, yet meaningful. </p>
+<p>Any constructions like <strong>building</strong> are representing functions. Do you remember the small world in the big one thing? Just like your own house is a small world in the big world. The <strong>goods</strong> are values. Names are variable names. Any good can be reassigned to any name, except for those rules.</p>
+<h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>Before EcmaSript 2015 (ES6) only <code>var</code> was available and scopes were a real issue. Variable declared with <code>var</code> would be accessible everywhere within the script and could be redeclared. ES6 introduced <code>let</code> and <code>const</code> variable declarations. They have block (local) scope and <code>var</code> was almost completely replaced.</p>
+<p><strong>So what is Scope?</strong></p>
+<p>Our scripts are full of functions. Functions as we know can take arguments, they have their own local Execution Context, they can have own local variables. This - is Scope. The Scope of the function. It is like indoors of the buildings that we have imagined. Private. Secure. You can interact with outer world from inside. But outer world cannot interact with you. </p>
+<p>Functions can have functions inside and those will follow the same rules. Let’s look at example:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+
+<p>Looks confusing right? Try to remember all that we have learned so far. What will happen first? Global Execution Context. At Creation Phase all the code will be read by JavaScript Engine and stored into memory. <code>function example()</code> is completely stored into memory and ready to be invoked. Creation Phase is over at this point. Execution Phase starts. Execution Phase will go through the code and once it reached <code>example()</code> it will invoke it. What’s next? </p>
+<p>Once <code>function example()</code> is invoked the Function Execution Context will start. If you remember, it’s almost same as Global. The arguments object will be created and store our <code>a</code> and <code>b</code> arguments. <code>console.log(a)</code> is also a function and will be stored into memory. <code>function inside()</code> will be stored too. Then it’s time for Execution Phase again. <code>console.log(a)</code> will be invoked and print statement in console. Then once it will reach <code>inside()</code> again the same thing is going to happen. Function Execution Context will start.</p>
+<p>Hope when you look at this step by step it became much easier to understand. Every Execution Context can have access to the parent Execution Context variables. But parent doesn’t have access to it’s child ones. Parent Execution Context can only pass data as arguments. </p>
+<p>Example output</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">example(&#x27;Yo!&#x27;, &#x27;You are the best =)&#x27;);</span><br><span class="line"></span><br><span class="line">&gt; &#x27;Yo!&#x27;</span><br><span class="line">&gt; &#x27;Hello world!&#x27;</span><br><span class="line">&gt; &#x27;You are the best =)&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Can you trace what happen? What will happen in this case than?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  console.log(c);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+
+<p>Try to use your imagination. Try to imagine those scopes, those locked houses with private data. Can somebody access your goods inside your house? </p>
+<p>I think you have managed it. But what if we declare <code>c</code> before and then try to declare it again with <code>var</code>? </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  var c = &#x27;Hehehe I&#x27;m nasty var&#x27;;</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    var c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(c);</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+
+<p>Are we those privileged citizens who can change <code>c</code> on their will? Yes we are. <code>var</code> declaration is happening in Global Scope (available everywhere in the program) or in the Function Scope (available only inside the function and other inner functions). <code>var</code> can be reassigned and even redeclared. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let a = &#x27;hey I&#x27;m an a!&#x27;;</span><br><span class="line">let a = &#x27;now I am z!&#x27;;</span><br><span class="line"></span><br><span class="line">  &gt; Uncaught SyntaxError: Identifier &#x27;a&#x27; has already been declared</span><br><span class="line"></span><br><span class="line">var b = &#x27;hey I&#x27;m b!&#x27;;</span><br><span class="line">var b = &#x27;now I am z!&#x27;;</span><br><span class="line">console.log(b);</span><br><span class="line"></span><br><span class="line">  &gt; &#x27;now I am z!&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>No after this code snippet, if you could not manage the previous one, have a look again. </p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>JavaScript scopes may be confusing. It may be daunting and hard. But hey, we all have passed through this. Try to practice with scopes. Play with variables in different parts of your script and functions. Try to nest 10 functions and before you run it, put everything on paper. How are you expecting <code>console.log</code> statements print out. What will be the order? Make it harder. Add <code>let</code>, <code>const</code> and <code>var</code> inside your functions and try to reassign and redeclare variables. Put on paper. Can you still trace them? </p>
+<p>I bet once you do this exercises few times, you will see the picture. You will be able to folow the data flow from the arguments passed to the first function and down to the most inner function. Imagination is what I want you to engage. </p>
+<p>Hope it was not confusing and helped you. Even a little. It was a great help to me too. Writing this post was hard and imaginary world is not perfect. </p>
+<p>See you around!</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Welcome-to-Function-City"><span class="toc-number">1.</span> <span class="toc-text">Welcome to Function City!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scope"><span class="toc-number">2.</span> <span class="toc-text">Scope</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Summary"><span class="toc-number">3.</span> <span class="toc-text">Summary</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes, Closure and me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes, Closure and me"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#2 - Scopes, Closure and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes, Closure and me&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes, Closure and me"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021
+    Sergii Kirianov
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="https://github.com/skirianov">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
