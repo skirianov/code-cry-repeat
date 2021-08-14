@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="Step by step we are on the way to undestand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates thorugh the world of script. We were exercising our imagination last t">
 <meta property="og:type" content="article">
-<meta property="og:title" content="#2 - Scopes, Closure and me">
+<meta property="og:title" content="#2 - Scopes and me">
 <meta property="og:url" content="http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/index.html">
 <meta property="og:site_name" content="Code Cry Repeat - Sergii Kirianov blog">
 <meta property="og:description" content="Step by step we are on the way to undestand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates thorugh the world of script. We were exercising our imagination last t">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-14T17:20:48.000Z">
-<meta property="article:modified_time" content="2021-08-14T19:32:49.558Z">
+<meta property="article:modified_time" content="2021-08-14T19:36:12.096Z">
 <meta property="article:author" content="Sergii Kirianov">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="scope">
@@ -39,7 +39,7 @@
       
     
     <!-- title -->
-    <title>#2 - Scopes, Closure and me</title>
+    <title>#2 - Scopes and me</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -90,16 +90,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes, Closure and me"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes, Closure and me"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=#2 - Scopes, Closure and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes, Closure and me&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes, Closure and me"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes and me"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes and me"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#2 - Scopes and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes and me&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes and me"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -116,7 +116,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        #2 - Scopes, Closure and me
+        #2 - Scopes and me
     </h1>
 
 
@@ -216,16 +216,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes, Closure and me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes, Closure and me"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=#2 - Scopes, Closure and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes, Closure and me"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes, Closure and me&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes, Closure and me"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&text=#2 - Scopes and me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&is_video=false&description=#2 - Scopes and me"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=#2 - Scopes and me&body=Check out this article: http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&title=#2 - Scopes and me"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&name=#2 - Scopes and me&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://skirianov.com/2021/08/14/2.%20Scopes%20and%20me/&t=#2 - Scopes and me"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
