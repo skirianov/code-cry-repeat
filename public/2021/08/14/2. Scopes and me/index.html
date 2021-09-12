@@ -14,7 +14,7 @@
 <meta property="og:description" content="Step by step we are on the way to understand JavaScript Engine better. We have seen how JavaScript creates, executes and navigates through the world of script. We were exercising our imagination last">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-14T17:20:48.000Z">
-<meta property="article:modified_time" content="2021-08-14T19:43:37.848Z">
+<meta property="article:modified_time" content="2021-08-14T19:51:07.436Z">
 <meta property="article:author" content="Sergii Kirianov">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="scope">
@@ -130,6 +130,8 @@
       
         <time datetime="2021-08-14T17:20:48.000Z" itemprop="datePublished">2021-08-14</time>
         
+        (Updated: <time datetime="2021-08-14T19:51:07.436Z" itemprop="dateModified">2021-08-14</time>)
+        
       
     </div>
 
@@ -159,12 +161,12 @@
 <p>There are set of words, which were given by the creator of this whole world. Those words can’t be changed. No one can <em>reassign</em> them. Also, citizens do have some common sense. When they were building the city, they made a list of <strong>constant</strong> words which cannot be reassigned too. Whole city depends on these words.</p>
 <p><em><strong>Imagination OFF</strong></em></p>
 <p>Phew…this one was a hard abstraction to make up. I’ve tried to make it simple, yet meaningful. </p>
-<p>Any constructions like <strong>building</strong> are representing functions. Do you remember the small world in the big one thing? Just like your own house is a small world in the big world. The <strong>goods</strong> are values. Names are variable names. Any good can be reassigned to any name, except for those rules.</p>
+<p>Any constructions like <strong>building</strong> are representing functions. Do you remember the small world in the big one thing? Just like your own house is a small world in the big world. The <strong>goods</strong> are values. Names are variable names. Any item can be reassigned to any name, except for those rules.</p>
 <h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>Before EcmaSript 2015 (ES6) only <code>var</code> was available and scopes were a real issue. Variable declared with <code>var</code> would be accessible everywhere within the script and could be redeclared. ES6 introduced <code>let</code> and <code>const</code> variable declarations. They have block (local) scope and <code>var</code> was almost completely replaced.</p>
 <p><strong>So what is Scope?</strong></p>
 <p>Our scripts are full of functions. Functions as we know can take arguments, they have their own local Execution Context, they can have own local variables. This - is Scope. The Scope of the function. It is like indoors of the buildings that we have imagined. Private. Secure. You can interact with outer world from inside. But outer world cannot interact with you. </p>
 <p>Functions can have functions inside and those will follow the same rules. Let’s look at example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Looks confusing right? Try to remember all that we have learned so far. What will happen first? Global Execution Context. At Creation Phase all the code will be read by JavaScript Engine and stored into memory. <code>function example()</code> is completely stored into memory and ready to be invoked. Creation Phase is over at this point. Execution Phase starts. Execution Phase will go through the code and once it reached <code>example()</code> it will invoke it. What’s next? </p>
 <p>Once <code>function example()</code> is invoked the Function Execution Context will start. If you remember, it’s almost same as Global. The arguments object will be created and store our <code>a</code> and <code>b</code> arguments. <code>console.log(a)</code> is also a function and will be stored into memory. <code>function inside()</code> will be stored too. Then it’s time for Execution Phase again. <code>console.log(a)</code> will be invoked and print statement in console. Then once it will reach <code>inside()</code> again the same thing is going to happen. Function Execution Context will start.</p>
@@ -172,17 +174,17 @@
 <p>Example output</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">example(&#x27;Yo!&#x27;, &#x27;You are the best =)&#x27;);</span><br><span class="line"></span><br><span class="line">&gt; &#x27;Yo!&#x27;</span><br><span class="line">&gt; &#x27;Hello world!&#x27;</span><br><span class="line">&gt; &#x27;You are the best =)&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>Can you trace what happen? What will happen in this case than?</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  console.log(c);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+<p>Can you trace what happen? What will happen in this case then?</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  console.log(c);</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    let c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Try to use your imagination. Try to imagine those scopes, those locked houses with private data. Can somebody access your goods inside your house? </p>
 <p>I think you have managed it. But what if we declare <code>c</code> before and then try to declare it again with <code>var</code>? </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  var c = &#x27;Hehehe I&#x27;m nasty var&#x27;;</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    var c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(c);</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">example();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function example (a, b) &#123;</span><br><span class="line">  console.log(a);</span><br><span class="line">  var c = &#x27;Hehehe I&#x27;m nasty var&#x27;;</span><br><span class="line">  b = &#x27;See you around =)&#x27;;</span><br><span class="line">  function inside () &#123;</span><br><span class="line">    var c = &#x27;Hello&#x27;;</span><br><span class="line">    console.log(c + &#x27; world!&#x27;);</span><br><span class="line">    console.log(b);</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(c);</span><br><span class="line">  inside();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Are we those privileged citizens who can change <code>c</code> on their will? Yes we are. <code>var</code> declaration is happening in Global Scope (available everywhere in the program) or in the Function Scope (available only inside the function and other inner functions). <code>var</code> can be reassigned and even redeclared. </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let a = &#x27;hey I&#x27;m an a!&#x27;;</span><br><span class="line">let a = &#x27;now I am z!&#x27;;</span><br><span class="line"></span><br><span class="line">  &gt; Uncaught SyntaxError: Identifier &#x27;a&#x27; has already been declared</span><br><span class="line"></span><br><span class="line">var b = &#x27;hey I&#x27;m b!&#x27;;</span><br><span class="line">var b = &#x27;now I am z!&#x27;;</span><br><span class="line">console.log(b);</span><br><span class="line"></span><br><span class="line">  &gt; &#x27;now I am z!&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>No after this code snippet, if you could not manage the previous one, have a look again. </p>
+<p>Now after this code snippet, if you could not manage the previous one, have a look again. </p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>JavaScript scopes may be confusing. It may be daunting and hard. But hey, we all have passed through this. Try to practice with scopes. Play with variables in different parts of your script and functions. Try to nest 10 functions and before you run it, put everything on paper. How are you expecting <code>console.log</code> statements print out. What will be the order? Make it harder. Add <code>let</code>, <code>const</code> and <code>var</code> inside your functions and try to reassign and redeclare variables. Put on paper. Can you still trace them? </p>
 <p>I bet once you do this exercises few times, you will see the picture. You will be able to folow the data flow from the arguments passed to the first function and down to the most inner function. Imagination is what I want you to engage. </p>
 <p>Hope it was not confusing and helped you. Even a little. It was a great help to me too. Writing this post was hard and imaginary world is not perfect. </p>
@@ -268,21 +270,35 @@
     <!-- styles -->
 
 
-
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+ 
+  <link
+    rel="preload"
+    href="/lib/font-awesome/css/all.min.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript
+    ><link
+      rel="stylesheet"
+      href="/lib/font-awesome/css/all.min.css"
+  /></noscript>
 
 
     <!-- jquery -->
  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+  
+<script src="/lib/jquery/jquery.min.js"></script>
+
 
 
 
 
 <!-- clipboard -->
 
-  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+   
+    
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
   
   <script type="text/javascript">
   $(function() {
